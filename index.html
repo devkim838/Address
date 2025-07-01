@@ -20,7 +20,7 @@
     }
 
     function postMessageToFlutter(postData) {
-        window.flutter_inappwebview.callHandler('callBackHandler', postData);
+        window.flutter_inappwebview.callHandler('callBackHandler', [postData]);
         // if (window.flutter_inappwebview) {
         //     window.flutter_inappwebview.callHandler('callBackHandler', postData);
         // } else if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.callBackHandler) { // iOS WKWebView
