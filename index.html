@@ -20,9 +20,12 @@
     }
 
     function postMessageToFlutter(postData) {
-        setTimeout(() => {
+        if (window.flutter_inappwebview && typeof window.flutter_inappwebview.callHandler === 'function') {
             window.flutter_inappwebview.callHandler('callBackHandler', [postData]);
-        }, 2000)
+        } else {
+            // WebView가 아직 준비되지 않은 경우 재시도
+            setTimeout(() => sendToFlutter(postData), 500);
+        }
         // if (window.flutter_inappwebview) {
         //     window.flutter_inappwebview.callHandler('callBackHandler', postData);
         // } else if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.callBackHandler) { // iOS WKWebView
