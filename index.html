@@ -15,6 +15,11 @@
 
     window.addEventListener("message", onReceivedPostMessage, false);
 
+    var isFlutterInAppWebViewReady = false;
+    window.addEventListener("flutterInAppWebViewPlatformReady", function() {
+        isFlutterInAppWebViewReady = true;
+    });
+
     function postMessageToiOS(postData) {
         window.webkit.messageHandlers.callBackHandler.postMessage(postData);
     }
