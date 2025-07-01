@@ -25,6 +25,8 @@
     }
 
     function postMessageToFlutter(postData) {
+        console.log("📦 postData to Flutter:", postData);
+        
         if (window.flutter_inappwebview && typeof window.flutter_inappwebview.callHandler === 'function') {
             window.flutter_inappwebview.callHandler('callBackHandler', [postData]);
         } else {
