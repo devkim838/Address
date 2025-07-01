@@ -20,7 +20,7 @@
     }
 
     function postMessageToFlutter(postData) {
-        setTimeout(()=>{
+        setTimeout(() => {
             window.flutter_inappwebview.callHandler('callBackHandler', [postData]);
         }, 2000)
         // if (window.flutter_inappwebview) {
