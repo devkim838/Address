@@ -57,6 +57,8 @@
     function execDaumPostcode() {
       new daum.Postcode({
         oncomplete: function(data) {
+          console.log("called daum.Postcode oncomplete()");
+          
           var jibunAddress = ""
 
           if (data.jibunAddress == "") {
