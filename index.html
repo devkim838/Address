@@ -35,22 +35,21 @@
     const MAX_RETRY = 10;
     function postMessageToFlutter(postData) {
         console.log("called postMessageToFlutter()");
-        if (window.flutter_inappwebview && isFlutterInAppWebViewReady) {
-            window.flutter_inappwebview.callHandler('callBackHandler', postData);
-        } else if (retryCount < MAX_RETRY) {
-            retryCount++;
-            console.log(`⏳ retrying... (${retryCount})`);
-            setTimeout(() => postMessageToFlutter(postData), 500);
+        if (window.flutter_inappwebview) {
+            if (isFlutterInAppWebViewReady) {
+                window.flutter_inappwebview.callHandler('callBackHandler', postData);
+            } else if (retryCount < MAX_RETRY) {
+                retryCount++;
+                console.log(`⏳ retrying... (${retryCount})`);
+                setTimeout(() => postMessageToFlutter(postData), 500);
+            } else {
+                console.warn("❌ Flutter WebView가 준비되지 않았습니다. 재시도 중단");
+            }
+        } else if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.callBackHandler) { // iOS WKWebView
+            window.webkit.messageHandlers.callBackHandler.postMessage(postData);
         } else {
-            console.warn("❌ Flutter WebView가 준비되지 않았습니다. 재시도 중단");
+            console.log("No WebView bridge found");
         }
-        // if (window.flutter_inappwebview) {
-        //     window.flutter_inappwebview.callHandler('callBackHandler', postData);
-        // } else if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.callBackHandler) { // iOS WKWebView
-        //     window.webkit.messageHandlers.callBackHandler.postMessage(postData);
-        // } else {
-        //     console.log("No WebView bridge found");
-        // }
     }
 
     var element_layer = document.getElementById('layer');
@@ -58,8 +57,7 @@
       //console.log("called execDaumPostcode()");  
       new daum.Postcode({
         oncomplete: function(data) {
-          console.log("called daum.Postcode oncomplete()");
-          
+          //console.log("called daum.Postcode oncomplete()");
           var jibunAddress = ""
 
           if (data.jibunAddress == "") {
@@ -73,7 +71,7 @@
               jibunAddress : jibunAddress,
               zonecode : data.zonecode
           };
-          window.postMessageToiOS(postData);
+          // window.postMessageToiOS(postData);
           window.postMessageToFlutter(postData);
         },
         width : '100%',
