@@ -15,23 +15,27 @@
 
     window.addEventListener("message", onReceivedPostMessage, false);
 
+    function postMessageToiOS(postData) {
+        window.webkit.messageHandlers.callBackHandler.postMessage(postData);
+    }
+
     var isFlutterInAppWebViewReady = false;
     window.addEventListener("flutterInAppWebViewPlatformReady", function() {
         console.log("flutterInAppWebViewPlatformReady");
         isFlutterInAppWebViewReady = true;
     });
-
-    function postMessageToiOS(postData) {
-        window.webkit.messageHandlers.callBackHandler.postMessage(postData);
-    }
-
+    
+    let retryCount = 0;
+    const MAX_RETRY = 10;
     function postMessageToFlutter(postData) {
-        console.log("📦 postData to Flutter:", postData);
         if (window.flutter_inappwebview && isFlutterInAppWebViewReady) {
-            window.flutter_inappwebview.callHandler("callBackHandler", postData);
-        } else {
-            console.log("❗ WebView가 아직 준비되지 않음. 재시도 예정");
+            window.flutter_inappwebview.callHandler('callBackHandler', postData);
+        } else if (retryCount < MAX_RETRY) {
+            retryCount++;
+            console.log(`⏳ retrying... (${retryCount})`);
             setTimeout(() => postMessageToFlutter(postData), 500);
+        } else {
+            console.warn("❌ Flutter WebView가 준비되지 않았습니다. 재시도 중단");
         }
         // if (window.flutter_inappwebview) {
         //     window.flutter_inappwebview.callHandler('callBackHandler', postData);
