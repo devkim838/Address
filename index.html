@@ -14,6 +14,12 @@
 <script>
 
     window.addEventListener("message", onReceivedPostMessage, false);
+    function onReceivedPostMessage(event) {
+        //..ex deconstruct event into action & params
+        var action = event.data.action;
+        var params = event.data.params;
+        console.log("onReceivedPostMessage " + event);
+    }
 
     function postMessageToiOS(postData) {
         window.webkit.messageHandlers.callBackHandler.postMessage(postData);
