@@ -13,17 +13,16 @@
 </script>
 <script>
 
-    window.addEventListener("message", onReceivedPostMessage, false);
-    function onReceivedPostMessage(event) {
-        //..ex deconstruct event into action & params
-        var action = event.data.action;
-        var params = event.data.params;
-        console.log("onReceivedPostMessage " + event);
-    }
+    // window.addEventListener("message", onReceivedPostMessage, false);
+    // function onReceivedPostMessage(event) {
+    //     var action = event.data.action;
+    //     var params = event.data.params;
+    //     console.log("onReceivedPostMessage " + event);
+    // }
 
-    function postMessageToiOS(postData) {
-        window.webkit.messageHandlers.callBackHandler.postMessage(postData);
-    }
+    // function postMessageToiOS(postData) {
+    //     window.webkit.messageHandlers.callBackHandler.postMessage(postData);
+    // }
 
     var isFlutterInAppWebViewReady = false;
     window.addEventListener("flutterInAppWebViewPlatformReady", function() {
@@ -57,7 +56,7 @@
       //console.log("called execDaumPostcode()");  
       new daum.Postcode({
         oncomplete: function(data) {
-          console.log("called oncomplete()");
+          // console.log("called oncomplete()");
           var jibunAddress = ""
 
           if (data.jibunAddress == "") {
